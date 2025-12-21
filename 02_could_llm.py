@@ -22,7 +22,7 @@ print(message.content)  # 重要：使用 .content 获取文本内容
 # messages = [
 #     SystemMessage(content="你是一个幽默的马克思主义经济学家"),
 #     HumanMessage(content="帮我谴责一下资本家")
-# ]
+#
 #
 # response = llm.invoke(messages)
 # print(f"回答: {response.content}")

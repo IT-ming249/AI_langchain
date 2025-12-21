@@ -1,11 +1,18 @@
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain_ollama import  ChatOllama
-llm = ChatOllama(model="qwen3:1.7b")
+from langchain_deepseek import ChatDeepSeek
+from constant import DEEPSEEK_API_KEY
+llm = ChatDeepSeek(
+    model="deepseek-chat",  # 或者 "deepseek-reasoner"
+    api_key=DEEPSEEK_API_KEY,
+    temperature=0.2,  # 新增：控制随机性
+    max_tokens=2048,  # 新增：控制最大生成token数
+    # timeout=30,  # 可选：超时设置
+)
 
-prompt_template = ChatPromptTemplate(
+prompt_template = ChatPromptTemplate.from_messages(
     messages= [
         ("system", "你是一个SEO专家"),
-        MessagesPlaceholder("added_message"), #这是一个占位符，放没想好的提示词，或者附加需求
+        MessagesPlaceholder(variable_name="added_message"), #这是一个占位符，放没想好的提示词，或者附加需求
         ("user", "{requirement}")
     ]
 )
@@ -19,5 +26,5 @@ prompt = prompt_template.invoke(
     }
 )
 print(prompt, type(prompt))
-# result = llm.invoke(prompt)
-# print(result.content)
+result = llm.invoke(prompt)
+print(result.content)

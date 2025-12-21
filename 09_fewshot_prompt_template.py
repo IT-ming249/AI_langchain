@@ -1,3 +1,5 @@
+from constant import DEEPSEEK_API_KEY
+from langchain_deepseek import ChatDeepSeek
 from langchain_core.prompts import PromptTemplate, FewShotPromptTemplate
 
 # 创建提示词模板
@@ -52,16 +54,32 @@ examples = [
     }
 ]
 
-print(example_prompt.invoke(examples[0]).to_string())
-
 ## 给大模型提供事例
-fewshot_promet = FewShotPromptTemplate(
-    examples=examples, #事例
-    example_prompt=example_prompt, #提示词模板
-    suffix= "问题: {my_question}",
-    input_variables=["my_question"]
+fewshot_prompt = FewShotPromptTemplate(
+    examples=examples,
+    example_prompt=example_prompt,
+    prefix="请根据以下示例回答问题：\n",  # 添加前缀
+    suffix="问题: {my_question}",
+    input_variables=["my_question"],
+    example_separator="\n\n",  # 分隔符
+    # template_format="f-string"  # 指定模板格式
 )
 
-prompt= fewshot_promet.invoke({"my_question": "美国总统特朗普还能活多久"})
-print(type(prompt.to_string()))
+prompt = fewshot_prompt.invoke({"my_question": "美国总统特朗普还能活多久"})
+prompt_text = prompt.to_string()
 
+llm = ChatDeepSeek(
+    model="deepseek-chat",  # 或者 "deepseek-reasoner"
+    api_key=DEEPSEEK_API_KEY,
+    temperature=0.2,  # 新增：控制随机性
+    max_tokens=2048,  # 新增：控制最大生成token数
+    # timeout=30,  # 可选：超时设置
+    # base_url="https://api.deepseek.com",  # 可选：自定义API端点
+)
+
+
+try:
+    response = llm.invoke(prompt_text)
+    print(f"\n模型回答:\n{response.content}")
+except Exception as e:
+    print(f"调用失败: {e}")
