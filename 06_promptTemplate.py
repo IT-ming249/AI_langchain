@@ -4,7 +4,7 @@ from langchain_core.prompts import PromptTemplate
 # 1. 使用构造函数
 prompt_template = PromptTemplate(
     template="讲一个关于{topic}方面的笑话",
-    input_variable=["topic"] #指定提示词中的变量
+    input_variables=["topic"] #指定提示词中的变量
 )
 
 prompt = prompt_template.format(topic="开发牛马")

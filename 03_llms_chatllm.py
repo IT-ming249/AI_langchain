@@ -1,17 +1,22 @@
-from langchain_ollama import OllamaLLM, ChatOllama
+from constant import DEEPSEEK_API_KEY, DEEPSEEK_BASE_URL
+from langchain_openai import ChatOpenAI
 from langchain_core.messages import SystemMessage, HumanMessage
 
-# 1. LLMs (只支持一问一答， 纯文本)
-# llm = ChatOllama(model="qwen3:1.7b")
-# message = llm.invoke("我是一个开发牛马，说点让我开心的事情")
-# print(message)  #返回字符串类型
 
-# 2. ChantModel 支持多轮对话，结构化输出，多模态输入输出， Function calling
-llm = ChatOllama(model="qwen3:1.7b")
+# deepseek大概率会报错SSL证书问题，可以换别的模型再试试
+llm = ChatOpenAI(
+    model="deepseek-chat",
+    openai_api_key=DEEPSEEK_API_KEY,
+    openai_api_base=DEEPSEEK_BASE_URL,  # DeepSeek API地址
+    temperature=0.7,
+    max_tokens=1024
+)
+
 messages = [
-    SystemMessage("你是一个SEO专家"),
-    HumanMessage("给我科普一下SEO的基础只是")
+    SystemMessage(content="你是一个SEO专家"),
+    HumanMessage(content="给我科普一下SEO的基础知识")
 ]
 
-result = llm.invoke(messages) #返回的是AImessage类型
-print(result)
+# 调用
+response = llm.invoke(messages)
+print(response.content)

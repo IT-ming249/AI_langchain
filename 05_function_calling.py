@@ -1,8 +1,12 @@
-from langchain_ollama import ChatOllama
 from langchain_core.tools import tool
 from langchain_core.messages import AIMessage, ToolMessage, HumanMessage
+from constant import DEEPSEEK_API_KEY
+from langchain_deepseek import ChatDeepSeek
 
-llm = ChatOllama(model="qwen3:1.7b")
+llm = ChatDeepSeek(
+    model="deepseek-chat",
+    api_key=DEEPSEEK_API_KEY,
+)
 
 @tool()
 def plus_tool(a:float, b:float) -> float:
