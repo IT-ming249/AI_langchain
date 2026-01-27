@@ -1,6 +1,7 @@
 from langchain.chat_models import init_chat_model
 from langchain_openai import ChatOpenAI
 from langchain_core.callbacks import get_usage_metadata_callback
+from langchain_core.callbacks import UsageMetadataCallbackHandler
 from constant import DASHSCOPE_API_KEY
 
 api_key = DASHSCOPE_API_KEY
@@ -40,13 +41,23 @@ def batch_demo():
 
 # token消耗统计
 def token_usage_demo():
-    # 1. 上下文管理器
+    # 1. 直接看invoke输出
+    # 2. 上下文管理器
+    """
     with get_usage_metadata_callback() as cb:
         res = model1.invoke("Hello how are you?")
         print(res.content)
         res2 = model2.invoke("Hello how are you?")
         print(res2.content)
         print(cb.usage_metadata)
+    """
+    # 3. 使用回调
+    callback = UsageMetadataCallbackHandler()
+    res1 = model1.invoke("Hello how are you?", config={"callbacks": [callback]})
+    print(res1)
+    res2 = model2.invoke("Hello how are you?", config={"callbacks": [callback]})
+    print(res2)
+    print(callback.usage_metadata)
 
 
 
