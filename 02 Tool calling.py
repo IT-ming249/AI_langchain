@@ -1,9 +1,10 @@
 from llm import model
 from tool_shema import WeatherInput
+from util import extract_ai_response
 
 from langchain.agents import  create_agent
 from langchain.tools import tool
-from langchain.messages import SystemMessage, HumanMessage
+from langchain.messages import HumanMessage
 
 # 工具的输入/输出类型 一定要指定， docstring一定要写
 @tool
@@ -34,9 +35,9 @@ def main():
     )
 
     res = agent.invoke({
-        "messages": [HumanMessage(content="当前深圳的天气怎么样，未来天气怎么样？")]
+        "messages": [HumanMessage(content="公司请假流程是怎么样的")]
     })
-    print(res)
+    print(extract_ai_response(res))
 
 
 if __name__ == '__main__':
