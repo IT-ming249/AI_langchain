@@ -1,4 +1,5 @@
 from langchain.chat_models import init_chat_model
+from langchain.messages import SystemMessage, HumanMessage
 from langchain_openai import ChatOpenAI
 from langchain_core.callbacks import get_usage_metadata_callback
 from langchain_core.callbacks import UsageMetadataCallbackHandler
@@ -39,6 +40,19 @@ def batch_demo():
     for r in results:
         print("-", r.content)
 
+
+# 消息列表形式调用模型
+def message_call():
+
+    messages = [
+        SystemMessage(content="你是一个精简但有礼貌的中文助理。"),
+        HumanMessage(content="帮我用 3 点概括使用 LangChain 的优势。"),
+    ]
+
+    result = model1.invoke(messages)
+    print(result.content)
+
+
 # token消耗统计
 def token_usage_demo():
     # 1. 直接看invoke输出
@@ -62,4 +76,5 @@ def token_usage_demo():
 
 
 if __name__ == "__main__":
-    token_usage_demo()
+    message_call()
+    #token_usage_demo()
