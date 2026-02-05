@@ -3,3 +3,4 @@ langchain==1.2.0
 langchain-openai==1.1.7
 langchain-core==1.2.7
 pydantic==2.12.5
+langgraph==1.0.7
