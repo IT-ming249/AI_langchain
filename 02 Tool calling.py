@@ -21,10 +21,14 @@ def search_knowledge_base(query: str) -> str:
 def get_weather(location: str, units: str = "celsius", include_forecast: bool = False) -> str:
     """获取当前天气信息（示例函数，真实项目中应调用天气 API）字段名一定要跟args_schema指定的schema 一样"""
     temp = 22 if units == "celsius" else 72
-    result = f"当前 {location} 天气：{temp} 度（单位：{units}）"
-    if include_forecast:
-        result += "\n未来 5 天预报：晴为主"
-    return result
+    try:
+        result = f"当前 {location} 天气：{temp} 度（单位：{units}）"
+        if include_forecast:
+            result += "\n未来 5 天预报：晴为主"
+        return result
+    except Exception as e:
+        # 对异常进行捕获并返回“可读错误信息”，避免直接抛出异常导致整次调用失败。
+        return f'获取天气数据异常{e}'
 
 
 def main():
