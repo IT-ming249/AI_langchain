@@ -28,10 +28,11 @@ def main():
             HumanMessage(content="请讲一个冷笑话。")
         ],
     })
+    print("response"+ str(extract_ai_response(response)))
     messages = list(response["messages"])
     messages.append(HumanMessage("请总结下消息"))
     response1 = agent.invoke({"messages": messages})
-    print(extract_ai_response( response1))
+    print("summary" + str(extract_ai_response(response1)))
 
 if __name__ == '__main__':
     main()

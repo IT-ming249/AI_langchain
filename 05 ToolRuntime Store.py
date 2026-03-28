@@ -23,10 +23,17 @@ def save_user_info(user_id: str, user_info: dict[str, Any], runtime: ToolRuntime
     store.put(("users",), user_id, user_info)
     return "用户信息已保存。"
 
+@tool
+def update_user_info(user_id: str, user_info: dict[str, Any], runtime: ToolRuntime) -> str:
+    """更新用户信息。"""
+    store = runtime.store
+    store.put(("users",), user_id, user_info)
+    return "用户信息已更新。"
+
 
 
 def main():
-    # 这个store可以时数据库对象，此处使用内存存储做演示
+    # 这个store可以是数据库对象，此处使用内存存储做演示
     store = InMemoryStore()
 
     agent = create_agent(
@@ -62,6 +69,32 @@ def main():
         }
     )
     print(extract_ai_response(result))
+
+    # 第三次对话：修改用户信息
+    agent.invoke(
+        {
+            "messages": [
+                {
+                    "role": "user",
+                    "content": "更新 id 为 abc123 的用户信息：name=Bar, age=26",
+                }
+            ]
+        }
+    )
+
+    # 第四次对话：再次读取用户信息
+    result = agent.invoke(
+        {
+            "messages": [
+                {
+                    "role": "user",
+                    "content": "查询 id 为 abc123 的用户信息。",
+                }
+            ]
+        }
+    )
+    print(extract_ai_response(result))
+
 
 if __name__ == '__main__':
     main()

@@ -27,7 +27,7 @@ config = {"configurable": {"thread_id": "demo-thread-1"}}
 
 agent.invoke(
     {"messages": [{"role": "user", "content": "Hi! My name is Bob."}]},
-    config=config,
+    #config=config,
 )
 
 result = agent.invoke(
