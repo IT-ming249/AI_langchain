@@ -32,6 +32,8 @@ def validate_response(state: AgentState, runtime: Runtime) -> dict | None:
         return {"messages": [RemoveMessage(id=last_message.id)]}
     return None
 
+# 注意state 里绝对拿不到 context 上下文只有 runtime 才能拿到 context
+
 if __name__ == '__main__':
     agent = create_agent(
         model=model,
